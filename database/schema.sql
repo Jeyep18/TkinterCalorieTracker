@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS foods (
     FOREIGN KEY (created_by) REFERENCES users(user_id) ON DELETE SET NULL
 );
 
-CREATE_TABLE IF NOT EXISTS food_logs (
+CREATE TABLE IF NOT EXISTS food_logs (
     log_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     food_id INT NOT NULL,

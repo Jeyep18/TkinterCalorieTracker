@@ -10,12 +10,12 @@ class DBManager:
     _connection = None
 
     def __new__(cls):
-        if cls.instance is None:
-            cls.instance = super(DBManager, cls).__new__(cls)
-        return cls.instance
+        if cls._instance is None:
+            cls._instance = super(DBManager, cls).__new__(cls)
+        return cls._instance
     
     def connect(self):
-        if self.connection is None or not self.connection.is_connected():
+        if self._connection is None or not self._connection.is_connected():
             try:
                 self._connection = mysql.connector.connect(
                     host = os.getenv("DB_HOST"),
@@ -33,7 +33,7 @@ class DBManager:
     def get_connection(self):
         if not self.connect():
             raise Exception("Unable to connect to the database.")
-        return self.connection
+        return self._connection
     
     def execute_query(self, query, params = None, fetch = False):
         try:
@@ -85,7 +85,7 @@ class DBManager:
             return False
         
     def close(self):
-        if self.connection and self.connection.is_connected():
-            self.connection.close()
+        if self._connection and self._connection.is_connected():
+            self._connection.close()
             print("Database connection closed.")
 
