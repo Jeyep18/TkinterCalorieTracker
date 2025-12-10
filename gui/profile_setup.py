@@ -9,7 +9,8 @@ class ProfileSetupScreen(ctk.CTkFrame):
         self.db_manager = db_manager
         self.on_complete = on_complete
 
-        self.grid_columnconfigure(0, weight = 1)
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_rowconfigure(0, weight=1)
         self.create_widgets()
 
     def create_widgets(self):
@@ -18,7 +19,7 @@ class ProfileSetupScreen(ctk.CTkFrame):
             text = "Set Up Your Profile",
             font = ctk.CTkFont(size = 28, weight = "bold")
         )
-        title.pack(pady = (40, 30))
+        title.pack(pady=(20, 10))
 
         subtitle = ctk.CTkLabel(
             self,
@@ -26,10 +27,13 @@ class ProfileSetupScreen(ctk.CTkFrame):
             font=ctk.CTkFont(size=14),
             text_color="gray"
         )
-        subtitle.pack(pady=(0, 40))
+        subtitle.pack(pady=(0, 15))
 
         form_frame = ctk.CTkFrame(self)
-        form_frame.pack(padx=100, pady=20, fill="both", expand=True)
+        form_frame.pack(padx=40, pady=10, anchor="center")
+
+        form_frame.grid_columnconfigure(0, weight=1)
+        form_frame.grid_columnconfigure(1, weight=1)
 
         self.create_form_field(form_frame, "Full Name:", "name_entry", row=0)
 
@@ -39,11 +43,11 @@ class ProfileSetupScreen(ctk.CTkFrame):
             form_frame,
             text="Gender:",
             font=ctk.CTkFont(size=14, weight="bold")
-        ).grid(row=2, column=0, padx=20, pady=15, sticky="w")
+        ).grid(row=2, column=0, padx=12, pady=8, sticky="w")
 
         self.gender_var = ctk.StringVar(value="male")
         gender_frame = ctk.CTkFrame(form_frame, fg_color="transparent")
-        gender_frame.grid(row=2, column=1, padx=20, pady=15, sticky="w")
+        gender_frame.grid(row=2, column=1, padx=12, pady=8, sticky="w")
         
         ctk.CTkRadioButton(
             gender_frame,
@@ -67,7 +71,7 @@ class ProfileSetupScreen(ctk.CTkFrame):
             form_frame,
             text="Activity Level:",
             font=ctk.CTkFont(size=14, weight="bold")
-        ).grid(row=5, column=0, padx=20, pady=15, sticky="w")
+        ).grid(row=5, column=0, padx=12, pady=8, sticky="w")
         
         self.activity_var = ctk.StringVar(value="moderate")
         activity_options = [
@@ -84,17 +88,17 @@ class ProfileSetupScreen(ctk.CTkFrame):
             values=[opt[1] for opt in activity_options],
             width=300
         )
-        activity_menu.grid(row=5, column=1, padx=20, pady=15, sticky="w")
+        activity_menu.grid(row=5, column=1, padx=12, pady=8, sticky="w")
 
         ctk.CTkLabel(
             form_frame,
             text="Goal:",
             font=ctk.CTkFont(size=14, weight="bold")
-        ).grid(row=6, column=0, padx=20, pady=15, sticky="w")
+        ).grid(row=6, column=0, padx=12, pady=8, sticky="w")
         
         self.goal_var = ctk.StringVar(value="maintain_weight")
         goal_frame = ctk.CTkFrame(form_frame, fg_color="transparent")
-        goal_frame.grid(row=6, column=1, padx=20, pady=15, sticky="w")
+        goal_frame.grid(row=6, column=1, padx=12, pady=8, sticky="w")
         
         ctk.CTkRadioButton(
             goal_frame,
@@ -119,22 +123,23 @@ class ProfileSetupScreen(ctk.CTkFrame):
 
         create_btn = ctk.CTkButton(
             self,
-            text = "Create Profile",
-            font = ctk.CTkFont(size=16, weight="bold"),
-            height = 45,
-            command = self.create_profile
+            text="Create Profile",
+            font=ctk.CTkFont(size=16, weight="bold"),
+            height=45,
+            width=200,
+            command=self.create_profile
         )
-        create_btn.pack(pady=30)
+        create_btn.pack(pady=20, ipadx=20, ipady=5)
 
     def create_form_field(self, parent, label_text, entry_name, row):
         ctk.CTkLabel(
             parent,
             text = label_text,
             font = ctk.CTkFont(size=14, weight="bold")
-        ).grid(row = row, column = 0, padx = 20, pady = 15, sticky = "w")
+        ).grid(row=row, column=0, padx=12, pady=8, sticky="w")
         
         entry = ctk.CTkEntry(parent, width=300)
-        entry.grid(row = row, column = 1, padx = 20, pady = 15, sticky = "w")
+        entry.grid(row=row, column=1, padx=12, pady=8, sticky="w")
 
         setattr(self, entry_name, entry)
     

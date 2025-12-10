@@ -81,18 +81,18 @@ class MainWindow(ctk.CTkFrame):
         
         ctk.CTkButton(
             button_frame,
-            text = "Search Food",
-            font = ctk.CTkFont(size = 12, weight = "bold"),
-            height = 38,
-            command = self.open_food_search
-        ).grid(row = 0, column = 0, padx = 5, pady = 8, sticky = "ew")
-        
-        ctk.CTkButton(
-            button_frame,
             text = "Add Food",
             font = ctk.CTkFont(size = 12, weight = "bold"),
             height = 38,
             command = self.open_add_food
+        ).grid(row = 0, column = 0, padx = 5, pady = 8, sticky = "ew")
+        
+        ctk.CTkButton(
+            button_frame,
+            text = "Log Food",
+            font = ctk.CTkFont(size = 12, weight = "bold"),
+            height = 38,
+            command = self.open_food_search
         ).grid(row = 0, column = 1, padx = 5, pady = 8, sticky = "ew")
         
         ctk.CTkButton(

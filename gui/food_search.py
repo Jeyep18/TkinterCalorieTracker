@@ -24,6 +24,7 @@ class FoodSearchDialog(ctk.CTkToplevel):
         self.grid_rowconfigure(2, weight = 1)
         
         self.create_widgets()
+        self.load_all_foods()
     
     def create_widgets(self):
         # Title
@@ -46,6 +47,7 @@ class FoodSearchDialog(ctk.CTkToplevel):
         )
         self.search_entry.grid(row = 0, column = 0, sticky = "ew", padx = (0, 8))
         self.search_entry.bind("<Return>", lambda e: self.search_foods())
+        self.search_entry.bind("<KeyRelease>", lambda e: self.search_foods())
         
         search_btn = ctk.CTkButton(
             search_frame,
@@ -111,9 +113,29 @@ class FoodSearchDialog(ctk.CTkToplevel):
         )
         self.log_btn.grid(row = 5, column = 0, pady = 10)
     
+    def load_all_foods(self):
+        for widget in self.results_frame.winfo_children():
+            widget.destroy()
+        
+        foods = Food.get_all(self.db_manager)
+        
+        if not foods:
+            no_results = ctk.CTkLabel(
+                self.results_frame,
+                text = "No foods in database. Add some foods first!",
+                text_color = "gray"
+            )
+            no_results.pack(pady = 15)
+            return
+        
+        for food in foods:
+            self.create_food_card(food)
+    
     def search_foods(self):
         keyword = self.search_entry.get().strip()
+        
         if not keyword:
+            self.load_all_foods()
             return
         
         for widget in self.results_frame.winfo_children():

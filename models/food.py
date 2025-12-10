@@ -67,3 +67,14 @@ class Food:
         if result:
             return Food.from_dict(result[0])
         return None
+    
+    @staticmethod
+    def get_all(db_manager, limit=100):
+        """Retrieve all foods from database."""
+        query = """
+            SELECT * FROM foods 
+            ORDER BY food_name
+            LIMIT %s
+        """
+        results = db_manager.execute_query(query, (limit,), fetch=True)
+        return [Food.from_dict(row) for row in results]
