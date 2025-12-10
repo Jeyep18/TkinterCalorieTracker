@@ -5,9 +5,9 @@ A modern calorie tracking desktop application built with Python, CustomTkinter, 
 ## Features
 
 - **Profile Setup**: Create your profile with personal stats to calculate your daily calorie goal
-- **Search Foods**: Search the food database and log meals with serving sizes
+- **Log Foods**: Search the food database and log meals with serving sizes
 - **Add Custom Foods**: Add your own foods with nutritional information
-- **Daily Log**: View all foods logged today, grouped by meal type
+- **Daily Log & History**: View logged foods grouped by meal type, with date picker to browse past days
 - **Progress Tracking**: Visual progress bar showing daily calorie consumption
 
 ## Prerequisites
@@ -112,9 +112,9 @@ TkinterCalorieTracker/
 ## Usage
 
 1. **First Launch**: Create your profile by entering your stats (age, weight, height, activity level, goal)
-2. **Add Food**: Click "Add Food" to find and log foods from the database
-3. **Add Custom Food**: Click "Add Custom Food" to add your own foods
-4. **View Daily Log**: Click "View Today's Log" to see all logged foods grouped by meal
+2. **Add Food**: Click "Add Food" to create custom foods with nutritional info
+3. **Log Food**: Click "Log Food" to search and log foods from the database
+4. **View Log**: Click "View Log" to see logged foods, use the date picker to view past days
 
 ## Dependencies
 

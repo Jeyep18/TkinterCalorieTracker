@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from datetime import date
+from datetime import date, timedelta, datetime
 from models.food_log import FoodLog
 from tkinter import messagebox
 
@@ -11,11 +11,12 @@ class DailyLogView(ctk.CTkToplevel):
         self.db_manager = db_manager
         self.user = current_user
         self.on_delete = on_delete
+        self.selected_date = date.today()
         
-        self.title("Today's Food Log")
-        self.geometry("480x560")
+        self.title("Food Log")
+        self.geometry("480x600")
         self.resizable(True, True)
-        self.minsize(380, 400)
+        self.minsize(380, 450)
         
         self.meal_emojis = {
             "breakfast": "Breakfast",
@@ -28,33 +29,96 @@ class DailyLogView(ctk.CTkToplevel):
         
         # responsive layout
         self.grid_columnconfigure(0, weight = 1)
-        self.grid_rowconfigure(1, weight = 1)
+        self.grid_rowconfigure(2, weight = 1)
         
         self.create_widgets()
         self.load_logs()
     
     def create_widgets(self):
-        # Header
+        # Header with title
         header = ctk.CTkFrame(self, fg_color = "transparent")
         header.grid(row = 0, column = 0, sticky = "ew", padx = 15, pady = (10, 5))
         
-        title = ctk.CTkLabel(
+        self.title_label = ctk.CTkLabel(
             header,
-            text = "Today's Food Log",
+            text = "Food Log",
             font = ctk.CTkFont(size = 18, weight = "bold")
         )
-        title.pack()
-
-        date_label = ctk.CTkLabel(
-            header,
-            text = date.today().strftime("%A, %B %d, %Y"),
+        self.title_label.pack()
+        
+        # Date picker frame
+        date_picker_frame = ctk.CTkFrame(self, fg_color = "transparent")
+        date_picker_frame.grid(row = 1, column = 0, sticky = "ew", padx = 15, pady = 5)
+        date_picker_frame.grid_columnconfigure(1, weight = 1)
+        
+        # Previous day button
+        prev_btn = ctk.CTkButton(
+            date_picker_frame,
+            text = "◀",
+            font = ctk.CTkFont(size = 14),
+            width = 40,
+            height = 32,
+            command = self.prev_day
+        )
+        prev_btn.grid(row = 0, column = 0, padx = (0, 8))
+        
+        # Date display/entry
+        date_center_frame = ctk.CTkFrame(date_picker_frame, fg_color = "transparent")
+        date_center_frame.grid(row = 0, column = 1)
+        
+        self.date_entry = ctk.CTkEntry(
+            date_center_frame,
+            width = 120,
+            height = 32,
+            font = ctk.CTkFont(size = 13),
+            justify = "center"
+        )
+        self.date_entry.pack(side = "left", padx = 5)
+        self.date_entry.insert(0, self.selected_date.strftime("%Y-%m-%d"))
+        self.date_entry.bind("<Return>", lambda e: self.go_to_date())
+        
+        go_btn = ctk.CTkButton(
+            date_center_frame,
+            text = "Go",
+            font = ctk.CTkFont(size = 12),
+            width = 40,
+            height = 32,
+            command = self.go_to_date
+        )
+        go_btn.pack(side = "left", padx = 2)
+        
+        today_btn = ctk.CTkButton(
+            date_center_frame,
+            text = "Today",
+            font = ctk.CTkFont(size = 12),
+            width = 55,
+            height = 32,
+            command = self.go_to_today
+        )
+        today_btn.pack(side = "left", padx = 2)
+        
+        # Next day button
+        next_btn = ctk.CTkButton(
+            date_picker_frame,
+            text = "▶",
+            font = ctk.CTkFont(size = 14),
+            width = 40,
+            height = 32,
+            command = self.next_day
+        )
+        next_btn.grid(row = 0, column = 2, padx = (8, 0))
+        
+        # Date label showing full date
+        self.date_display_label = ctk.CTkLabel(
+            date_picker_frame,
+            text = self.selected_date.strftime("%A, %B %d, %Y"),
             font = ctk.CTkFont(size = 12),
             text_color = "gray"
         )
-        date_label.pack()
+        self.date_display_label.grid(row = 1, column = 0, columnspan = 3, pady = (5, 0))
        
         self.content_frame = ctk.CTkScrollableFrame(self)
-        self.content_frame.grid(row = 1, column = 0, sticky = "nsew", padx = 15, pady = 5)
+        self.content_frame.grid(row = 2, column = 0, sticky = "nsew", padx = 15, pady = 5)
         
         # Close button
         close_btn = ctk.CTkButton(
@@ -65,7 +129,41 @@ class DailyLogView(ctk.CTkToplevel):
             height = 32,
             command = self.destroy
         )
-        close_btn.grid(row = 2, column = 0, pady = 10)
+        close_btn.grid(row = 3, column = 0, pady = 10)
+    
+    def update_date_display(self):
+        self.date_entry.delete(0, "end")
+        self.date_entry.insert(0, self.selected_date.strftime("%Y-%m-%d"))
+        self.date_display_label.configure(text = self.selected_date.strftime("%A, %B %d, %Y"))
+        
+        if self.selected_date == date.today():
+            self.title_label.configure(text = "Today's Food Log")
+        else:
+            self.title_label.configure(text = "Food Log History")
+    
+    def prev_day(self):
+        self.selected_date = self.selected_date - timedelta(days = 1)
+        self.update_date_display()
+        self.load_logs()
+    
+    def next_day(self):
+        self.selected_date = self.selected_date + timedelta(days = 1)
+        self.update_date_display()
+        self.load_logs()
+    
+    def go_to_today(self):
+        self.selected_date = date.today()
+        self.update_date_display()
+        self.load_logs()
+    
+    def go_to_date(self):
+        date_str = self.date_entry.get().strip()
+        try:
+            self.selected_date = datetime.strptime(date_str, "%Y-%m-%d").date()
+            self.update_date_display()
+            self.load_logs()
+        except ValueError:
+            messagebox.showerror("Invalid Date", "Please enter date in YYYY-MM-DD format")
     
     def load_logs(self):
         for widget in self.content_frame.winfo_children():
@@ -73,7 +171,7 @@ class DailyLogView(ctk.CTkToplevel):
         
         logs = FoodLog.get_by_user_and_date(
             self.user.user_id,
-            date.today(),
+            self.selected_date,
             self.db_manager
         )
         
