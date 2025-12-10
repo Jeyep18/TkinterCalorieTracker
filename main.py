@@ -20,7 +20,7 @@ class CalorieTrackerApp:
         self.root.title("Calorie Tracker")
         self.root.geometry("900x700")
 
-        self.center.window()
+        self.center_window()
 
         self.current_user = None
 
