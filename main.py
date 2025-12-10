@@ -18,8 +18,10 @@ class CalorieTrackerApp:
 
         self.root = ctk.CTk()
         self.root.title("Calorie Tracker")
-        self.root.geometry("900x700")
-
+        
+        self.window_width = 720
+        self.window_height = 560
+        
         self.center_window()
 
         self.current_user = None
@@ -39,19 +41,13 @@ class CalorieTrackerApp:
         self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
 
     def center_window(self):
-        # center ts
-        self.root.update_idletasks()
-
         screen_width = self.root.winfo_screenwidth()
         screen_height = self.root.winfo_screenheight()
 
-        window_width = self.root.winfo_width()
-        window_height = self.root.winfo_height()
+        x = (screen_width - self.window_width) // 2
+        y = (screen_height - self.window_height) // 2
 
-        x = (screen_width - window_width) // 2
-        y = (screen_height - window_height) // 2
-
-        self.root.geometry(f"+{x}+{y}")
+        self.root.geometry(f"{self.window_width}x{self.window_height}+{x}+{y}")
 
     def show_profile_setup(self):
         if self.current_screen:

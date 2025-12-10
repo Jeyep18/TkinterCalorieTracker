@@ -92,49 +92,49 @@ class ProfileSetupScreen(ctk.CTkFrame):
             font=ctk.CTkFont(size=14, weight="bold")
         ).grid(row=6, column=0, padx=20, pady=15, sticky="w")
         
-        self.goal_var = ctk.StringVar(value="maintain")
+        self.goal_var = ctk.StringVar(value="maintain_weight")
         goal_frame = ctk.CTkFrame(form_frame, fg_color="transparent")
         goal_frame.grid(row=6, column=1, padx=20, pady=15, sticky="w")
         
         ctk.CTkRadioButton(
             goal_frame,
-            text="Lose Weight",
-            variable=self.goal_var,
-            value="lose"
-        ).pack(side="left", padx=10)
+            text = "Lose Weight",
+            variable = self.goal_var,
+            value = "lose_weight"
+        ).pack(side = "left", padx = 10)
         
         ctk.CTkRadioButton(
             goal_frame,
-            text="Maintain",
-            variable=self.goal_var,
-            value="maintain"
-        ).pack(side="left", padx=10)
+            text = "Maintain",
+            variable = self.goal_var,
+            value = "maintain_weight"
+        ).pack(side = "left", padx = 10)
         
         ctk.CTkRadioButton(
             goal_frame,
-            text="Gain Weight",
-            variable=self.goal_var,
-            value="gain"
-        ).pack(side="left", padx=10)
+            text = "Gain Weight",
+            variable = self.goal_var,
+            value = "gain_weight"
+        ).pack(side = "left", padx = 10)
 
         create_btn = ctk.CTkButton(
             self,
-            text="Create Profile",
-            font=ctk.CTkFont(size=16, weight="bold"),
-            height=45,
-            command=self.create_profile
+            text = "Create Profile",
+            font = ctk.CTkFont(size=16, weight="bold"),
+            height = 45,
+            command = self.create_profile
         )
         create_btn.pack(pady=30)
 
     def create_form_field(self, parent, label_text, entry_name, row):
         ctk.CTkLabel(
             parent,
-            text=label_text,
-            font=ctk.CTkFont(size=14, weight="bold")
-        ).grid(row=row, column=0, padx=20, pady=15, sticky="w")
+            text = label_text,
+            font = ctk.CTkFont(size=14, weight="bold")
+        ).grid(row = row, column = 0, padx = 20, pady = 15, sticky = "w")
         
         entry = ctk.CTkEntry(parent, width=300)
-        entry.grid(row=row, column=1, padx=20, pady=15, sticky="w")
+        entry.grid(row = row, column = 1, padx = 20, pady = 15, sticky = "w")
 
         setattr(self, entry_name, entry)
     
