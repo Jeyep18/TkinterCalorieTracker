@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS food_logs (
     log_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     food_id INT NOT NULL,
-    servings DECIMAL(3,2) NOT NULL DEFAULT 1,
+    servings DECIMAL(5,2) NOT NULL DEFAULT 1,
     total_calories DECIMAL(7,2) NOT NULL,
     meal_type ENUM('breakfast', 'lunch', 'dinner', 'snack') NOT NULL,
     log_date DATE NOT NULL,

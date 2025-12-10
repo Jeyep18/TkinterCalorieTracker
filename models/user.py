@@ -1,5 +1,3 @@
-from datetime import datetime
-
 class User:
     def __init__(self, user_id = None, user_name = None, age = None, gender = None, weight_kg = None, height_cm = None, activity_level = None, goal = None, daily_calorie_goal = None):
         self.user_id = user_id
@@ -15,7 +13,7 @@ class User:
     def to_dict(self):
         return {
             'user_id': self.user_id,
-            'name': self.name,
+            'user_name': self.user_name,
             'age': self.age,
             'gender': self.gender,
             'weight_kg': self.weight_kg,
@@ -89,4 +87,4 @@ class User:
         return [User.from_dict(row) for row in results]
     
     def __str__(self):
-        return f"User: {self.name} ({self.age} years old)"
+        return f"User: {self.user_name} ({self.age} years old)"

@@ -19,7 +19,7 @@ class DailyResetService:
             return result[0]
         
         user_query = "SELECT daily_calorie_goal FROM users WHERE user_id = %s"
-        user_result = self.db.execute_query(user_query, (user_id,), fetch=True)
+        user_result = self.db_manager.execute_query(user_query, (user_id,), fetch=True)
 
         if not user_result:
             raise Exception(f"USER {user_id} NOT FOUND")
@@ -43,39 +43,40 @@ class DailyResetService:
         if target_date is None:
             target_date = date.today()
 
-            logs = self.get_or_create_daily_log(user_id, target_date)
+        logs = self.get_or_create_daily_log(user_id, target_date)
 
-            total_calories = FoodLog.get_daily_total(user_id, target_date, self.db_manager)
+        total_calories = FoodLog.get_daily_total(user_id, target_date, self.db_manager)
 
-            remaining = logs['calorie_goal'] - total_calories
+        remaining = logs['calorie_goal'] - total_calories
 
-            update_query = """
-                UPDATE daily_logs
-                SET total_calories = %s, remaining_calories = %s
-                WHERE user_id = %s AND log_date = %s
-            """
-            self.db.execute_query(
-                update_query,
-                (total_calories, remaining, user_id, target_date)
-            )
+        update_query = """
+            UPDATE daily_logs
+            SET total_calories = %s, remaining_calories = %s
+            WHERE user_id = %s AND log_date = %s
+        """
+        self.db_manager.execute_query(
+            update_query,
+            (total_calories, remaining, user_id, target_date)
+        )
 
-            query = """
-                SELECT * FROM daily_logs
-                WHERE user_id = %s AND log_date = %s
-            """
-            result = self.db.execute_query(
-                query, (user_id, target_date), fetch=True
-            )
-            return result[0]
+        query = """
+            SELECT * FROM daily_logs
+            WHERE user_id = %s AND log_date = %s
+        """
+        result = self.db_manager.execute_query(
+            query, (user_id, target_date), fetch=True
+        )
+        
+        return result[0]
         
     def check_today_log_exists(self, user_id):
         today = date.today()
 
         query = """
-            SELECT summary_id FROM daily_logs
+            SELECT log_id FROM daily_logs
             WHERE user_id = %s AND log_date = %s
         """
-        result = self.db.execute_query(query, (user_id, today), fetch=True)
+        result = self.db_manager.execute_query(query, (user_id, today), fetch=True)
 
         if not result:
             self.get_or_create_daily_log(user_id, today)
@@ -91,7 +92,7 @@ class DailyResetService:
             WHERE user_id = %s AND log_date >= %s
             ORDER BY log_date DESC
         """
-        results = self.db.execute_query(query, (user_id, start_date), fetch=True)
+        results = self.db_manager.execute_query(query, (user_id, start_date), fetch=True)
         return results
 
 
