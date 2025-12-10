@@ -13,18 +13,29 @@ A modern calorie tracking desktop application built with Python, CustomTkinter, 
 ## Prerequisites
 
 - **Python 3.8+**
-- **MySQL Server** (running locally or remotely)
+- **XAMPP** (with Apache and MySQL)
 
 ## Installation
 
-### 1. Clone the Repository
+### 1. XAMPP Setup
+
+1. Download and install [XAMPP](https://www.apachefriends.org/)
+2. Open XAMPP Control Panel
+3. Start **Apache** and **MySQL** servers
+4. Click **Admin** next to MySQL (or go to `http://localhost/phpmyadmin`)
+5. In phpMyAdmin, create a new database:
+   - Click **"New"** in the left sidebar
+   - Enter database name: `calorie_tracker`
+   - Click **"Create"**
+
+### 2. Clone the Repository
 
 ```bash
 git clone https://github.com/Jeyep18/TkinterCalorieTracker.git
 cd TkinterCalorieTracker
 ```
 
-### 2. Create a Virtual Environment (Recommended)
+### 3. Create a Virtual Environment (Recommended)
 
 ```bash
 python -m venv venv
@@ -36,29 +47,36 @@ venv\Scripts\activate
 source venv/bin/activate
 ```
 
-### 3. Install Dependencies
+### 4. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Configure Database
+### 5. Configure Database
 
 Create a `.env` file in the project root with your MySQL credentials:
 
 ```env
 DB_HOST=localhost
-DB_USER=your_mysql_username
-DB_PASSWORD=your_mysql_password
+DB_USER=root
+DB_PASSWORD=
 DB_NAME=calorie_tracker
 ```
 
-> **Note**: Create the `calorie_tracker` database in MySQL before running the app:
-> ```sql
-> CREATE DATABASE calorie_tracker;
-> ```
+> **Note**: By default, XAMPP uses `root` as username with no password. Adjust if you've configured different credentials.
 
-### 5. Run the Application
+### 6. Populate Sample Food Data (Optional)
+
+To add mock food data to the database, run:
+
+```bash
+python populate_foods.py
+```
+
+This will add sample foods (fruits, vegetables, proteins, etc.) to help you get started.
+
+### 7. Run the Application
 
 ```bash
 python main.py
@@ -94,7 +112,7 @@ TkinterCalorieTracker/
 ## Usage
 
 1. **First Launch**: Create your profile by entering your stats (age, weight, height, activity level, goal)
-2. **Search Food**: Click "Search Food" to find and log foods from the database
+2. **Add Food**: Click "Add Food" to find and log foods from the database
 3. **Add Custom Food**: Click "Add Custom Food" to add your own foods
 4. **View Daily Log**: Click "View Today's Log" to see all logged foods grouped by meal
 
@@ -103,8 +121,6 @@ TkinterCalorieTracker/
 - `customtkinter` - Modern UI widgets
 - `mysql-connector-python` - MySQL database connection
 - `python-dotenv` - Environment variable management
-- `pillow` - Image processing
-- `requests` - HTTP requests
 
 ## License
 
